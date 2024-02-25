@@ -1,22 +1,23 @@
 /* eslint-disable react/prop-types */
+
 import { extractTime } from '../../utils/extractTime';
+
 import { useAuth } from '../context/AuthContext';
 import useConversation from '../zustand/useConversation';
 
 const Message = ({ message }) => {
   const { authUser } = useAuth();
   const { selectedConversation } = useConversation();
-  //   const fromMe = message?.senderId === authUser._id;
-  const fromMe = true;
-  //   const formattedTime = extractTime(message.createdAt?? "2024-06-10");
+  const fromMe = message.senderId === authUser._id;
+  const formattedTime = extractTime(message.createdAt);
   const chatClassName = fromMe ? 'chat-end' : 'chat-start';
   const profilePic = fromMe
     ? authUser.profilePic
     : selectedConversation?.profilePic;
   const bubbleBgColor = fromMe ? 'bg-blue-500' : '';
 
-  //   const shakeClass = message.shouldShake ? 'shake' : '';
-  const shakeClass = true;
+  const shakeClass = message.shouldShake ? 'shake' : '';
+
   return (
     <div className={`chat ${chatClassName}`}>
       <div className="chat-image avatar">
@@ -27,10 +28,10 @@ const Message = ({ message }) => {
       <div
         className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pb-2`}
       >
-        random
+        {message.message}
       </div>
       <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
-        {/* {formattedTime} */}24th jan
+        {formattedTime}
       </div>
     </div>
   );
